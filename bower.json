@@ -1,0 +1,19 @@
+{
+  "name": "photosandfriends",
+  "version": "0.0.1",
+  "dependencies": {
+    "dropstore-ng": "git://github.com/AnalogJ/dropstore-ng.git#~1.0.4",
+    "jquery": "git://github.com/components/jquery.git#~2.0.3"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.0.7",
+    "angular-scenario": "~1.0.7"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
