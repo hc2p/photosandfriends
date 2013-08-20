@@ -1,30 +1,31 @@
 'use strict';
 
 angular.module('photosandfriendsApp')
-  .controller('MainCtrl', ['$scope', 'dropstoreClient', '$cookies',
-    function MainCtrl($scope, dropstoreClient, $cookies) {
+  .controller('MainCtrl', ['$scope', 'dropstoreClient', '$cookieStore', '$timeout',
+    function MainCtrl($scope, dropstoreClient, $cookieStore, $timeout) {
       
       var client = dropstoreClient.create({key: 'h5yz9hzhs9ddj2w'});
       var _datastore;
       
       $scope.connectDropbox = function() {
-        client.authenticate({interactive: true}).then(function(datastoreManager){
-          console.log('completed authentication after click');
-          return datastoreManager.openDefaultDatastore();
-        });
+        $cookieStore.put('secondStep', true);
+        $timeout(function() {
+          client.authenticate({interactive: true});
+        },1, false);
       };
 
       $scope.isNotAuthenticated = false;
       
       // Try to finish OAuth authorization.
-      var secondStep = $cookies.secondStep;
+      var secondStep = $cookieStore.get('secondStep', true);
       if (secondStep) {
-        client.authenticate({interactive: true}).
-          then(function(datastoreManager){
-            $cookies.secondStep = true;
-            console.log('completed authentication on load');
-            return datastoreManager.openDefaultDatastore();
+        $timeout(function() {
+          client.authenticate({interactive: true}).
+            then(function(datastoreManager){
+              console.log('completed authentication on load');
+              return datastoreManager.openDefaultDatastore();
           });
+        },1,false);
       }
       else {
         if (client.isAuthenticated()) {
