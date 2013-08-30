@@ -11,7 +11,7 @@ angular.module('photosandfriendsApp', ['dropstore-ng', 'ngCookies'])
         redirectTo: '/'
       });
 
-    //$locationProvider.html5Mode(true);
+    $locationProvider.html5Mode(true).hashPrefix('#');
   })
   .factory('dropboxAuth', function(dropstoreClient, $cookieStore) {
       var dropboxAuth = {};
