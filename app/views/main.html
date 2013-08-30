@@ -1,11 +1,10 @@
 <div class="hero-unit">
 	<h1>Photos and Friends</h1>
 	
-	<div ng-switch on="isAuthenticated()">
-		<div ng-switch-when="false">
-			<button ng-click="connectDropbox()">connect dropbox</button>
-		</div>
-		<div ng-switch-when="true">authenticated</div>
-		<div ng-switch-default>...</div>
+	<div ng-hide="isAuthenticated()">
+		<button ng-click="connectDropbox()">connect dropbox</button>
+	</div>
+	<div ng-show="isAuthenticated()">
+		authenticated
 	</div>
 </div>
