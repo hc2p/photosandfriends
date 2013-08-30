@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('photosandfriendsApp', ['dropstore-ng', 'ngCookies'])
+angular.module('photosandfriendsApp', ['ngCookies'])
   .config(function($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {
@@ -13,26 +13,37 @@ angular.module('photosandfriendsApp', ['dropstore-ng', 'ngCookies'])
 
     $locationProvider.html5Mode(true).hashPrefix('#');
   })
-  .factory('dropboxAuth', function(dropstoreClient, $cookieStore, $q) {
+  .factory('dropboxAuth', function($rootScope, $cookieStore, $q) {
       var dropboxAuth = {};
-      var _client = dropstoreClient.create({key: 'h5yz9hzhs9ddj2w'});
+
+      var _client = new Dropbox.Client({key: "h5yz9hzhs9ddj2w", sandbox: true})
+        //.authDriver(new Dropbox.Drivers.Redirect({rememberUser: true, useQuery: true}));
+
       var _datastore;
 
-      dropboxAuth.connectDropbox = function() {
-        $cookieStore.put('secondStep', true);
-        _client.authenticate({interactive: true});
+      dropboxAuth.connectDropbox = function() {        
+        _client.authenticate(function(error, client) {
+            if (error)
+                errorHandler(error)
+            else {
+                deferred.resolve(client);
+            }
+        });
       };
 
-      dropboxAuth.dataStoreDeferred = function() {
+      dropboxAuth.authDeferred = function() {
         var deferred = $q.defer();
 
-        _client.authenticate({interactive: false}).
-          then(function(datastoreManager){
-            if (datastoreManager && _client.isAuthenticated()) {
-              deferred.resolve(true);
+        _client.authenticate({interactive: false}, function(error, client){
+
+          $rootScope.$apply(function() {
+            if (error || ! _client.isAuthenticated())
+              deferred.resolve(false);
+            else {
               console.log('completed authentication on load');
+              deferred.resolve(true);
             }
-            deferred.resolve(false);
+          });
         });
 
         return deferred.promise;
