@@ -4,7 +4,9 @@ angular.module('photosandfriendsApp')
   .controller('MainCtrl', ['$scope', 'dropboxAuth',
     function MainCtrl($scope, dropboxAuth) {
 
-      $scope.isAuthenticated = dropboxAuth.dataStoreDeferred();
+      $scope.user = {
+        isAuthenticated: dropboxAuth.authDeferred()
+      }
 
       $scope.connectDropbox = function() {
         dropboxAuth.connectDropbox();
