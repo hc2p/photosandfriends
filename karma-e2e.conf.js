@@ -7,6 +7,9 @@ basePath = '';
 files = [
   ANGULAR_SCENARIO,
   ANGULAR_SCENARIO_ADAPTER,
+  'app/bower_components/angular/angular.js',
+  'app/bower_components/angular-mocks/angular-mocks.js',
+  'app/scripts/app.js',
   'test/e2e/**/*.js'
 ];
 
@@ -41,7 +44,8 @@ autoWatch = false;
 // - Safari (only Mac)
 // - PhantomJS
 // - IE (only Windows)
-browsers = ['Chrome'];
+browsers = ['PhantomJS'];
+//browsers = ['Chrome'];
 
 // If browser does not capture in given timeout [ms], kill it
 captureTimeout = 5000;
@@ -51,8 +55,8 @@ captureTimeout = 5000;
 singleRun = false;
 
 // Uncomment the following lines if you are using grunt's server to run the tests
-// proxies = {
-//   '/': 'http://localhost:9000/'
-// };
+proxies = {
+   '/': 'http://localhost:9000/'
+};
 // URL root prevent conflicts with the site root
-// urlRoot = '_karma_';
+urlRoot = '_karma_';

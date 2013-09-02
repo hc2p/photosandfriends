@@ -7,6 +7,7 @@ basePath = '';
 files = [
   JASMINE,
   JASMINE_ADAPTER,
+  'https://www.dropbox.com/static/api/1/dropbox-datastores-0.1.0-b2.js',
   'app/bower_components/angular/angular.js',
   'app/bower_components/angular-mocks/angular-mocks.js',
   'app/scripts/*.js',
@@ -46,7 +47,7 @@ autoWatch = false;
 // - Safari (only Mac)
 // - PhantomJS
 // - IE (only Windows)
-browsers = ['Chrome'];
+browsers = ['PhantomJS'];
 
 // If browser does not capture in given timeout [ms], kill it
 captureTimeout = 5000;
