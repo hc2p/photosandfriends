@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('photosandfriendsApp', ['ngCookies'])
+angular.module('photosandfriendsApp', [])
   .config(function($routeProvider, $locationProvider) {
     $routeProvider
       .when('/home', {
@@ -9,7 +9,11 @@ angular.module('photosandfriendsApp', ['ngCookies'])
       })
       .when('/login', {
         templateUrl: 'views/login.html', 
-        controller: 'LoginCtrl'})
+        controller: 'LoginCtrl',
+        access: {
+          isFree: true
+        }
+      })
       .otherwise({
         redirectTo: '/login'
       });
@@ -17,7 +21,7 @@ angular.module('photosandfriendsApp', ['ngCookies'])
 
     $locationProvider.html5Mode(true).hashPrefix('#');
   })
-  .factory('dropboxAuth', function($rootScope, $cookieStore, $q, $timeout) {
+  .factory('dropboxAuth', function($rootScope, $q, $timeout) {
       var dropboxAuth = {};
 
       var _client = dropboxAuth.client = new Dropbox.Client({key: "h5yz9hzhs9ddj2w", sandbox: true})
