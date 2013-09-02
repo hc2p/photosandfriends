@@ -5,6 +5,17 @@
 		<button ng-click="connectDropbox()">connect dropbox</button>
 	</div>
 	<div ng-show="user.isAuthenticated">
-		authenticated
+		<ul>
+			<li ng-repeat="folder in user.sharedFolders">
+				folder: {{folder.getFields().title}}
+			</li>
+		</ul>
+
+		<input type="file" ng-model-instant id="fileToUpload" multiple onchange="angular.element(this).scope().setFiles(this)" />
+		<ul>
+			<li ng-repeat="file in files">
+				<img src="{{file}}" alt="" |>
+			</li>
+		</ul>
 	</div>
 </div>
