@@ -40,20 +40,67 @@ angular.module('photosandfriendsApp', [])
       };
 
       dropboxAuth.authDeferred = (function() {
-              var deferred = $q.defer();
+        var deferred = $q.defer();
+
+        _client.authenticate({interactive: false}, function(error, client){
+            if (error || ! _client.isAuthenticated())
+              deferred.resolve(false);
+            else {
+              console.log('completed authentication on load');
+              deferred.resolve(true);
+            }
+            $rootScope.$$phase || $rootScope.$apply();
+        });
+
+        return deferred.promise;
+      })();
+
+      var uploadFile = function(path, file) {
+        var deferred = $q.defer();
+        _client.writeFile('Photos/' + path + '/' + file.name, file, function(err, fileStat) {
+          if (err) {
+            deferred.reject(err);
+          }
+          else {
+            fileStat.path = path;
+            deferred.resolve(fileStat);
+          }
+          $rootScope.$$phase || $rootScope.$apply();
+        })
+        return deferred.promise;
+      };
+
+      var uploadFiles = function (path, files) {
+        var promises = [];
+        _(files).each(function(file) {
+          promises.push(uploadFile(path, file));
+        });
+        
+        return $q.all(promises);
+      }
       
-              _client.authenticate({interactive: false}, function(error, client){
-                  if (error || ! _client.isAuthenticated())
-                    deferred.resolve(false);
-                  else {
-                    console.log('completed authentication on load');
-                    deferred.resolve(true);
-                  }
-                  $rootScope.$$phase || $rootScope.$apply();
-              });
+      var shareFiles = function(fileStats) {
+        var deferred = $q.defer();
+        _(fileStats).each(function(fileStat) {
+          console.log(fileStat);
+        });
+        _client.makeUrl('Photos/' + fileStats[0].path, function(err, shareUrl) {
+          if (err) {
+            deferred.reject(err);
+          }
+          else {
+            deferred.resolve(shareUrl);
+          }
+          $rootScope.$$phase || $rootScope.$apply();
+        });
+        return deferred.promise;
+      }
       
-              return deferred.promise;
-            })();
+      dropboxAuth.share = function(title, files, contacts) {
+        uploadFiles(title, files).then(shareFiles).then(function(shareUrl) {
+          console.log(shareUrl.url);
+        });
+      }
 
       return dropboxAuth;
     }

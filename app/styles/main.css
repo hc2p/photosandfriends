@@ -2,3 +2,8 @@
 ul li {
   color: yellow;
 }
+
+/* line 9, sass/main.scss */
+.image-list img {
+  height: 200px;
+}

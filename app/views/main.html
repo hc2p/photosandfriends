@@ -12,10 +12,27 @@
 		</ul>
 
 		<input type="file" ng-model-instant id="fileToUpload" multiple onchange="angular.element(this).scope().setFiles(this)" />
-		<ul>
+		<ul class="image-list">
 			<li ng-repeat="file in files">
-				<img src="{{file}}" alt="" |>
+				<img src="{{file.data}}" alt="{{file.name}}" |>
 			</li>
 		</ul>
+		
+		<form name="shareForm" ng-submit="handleShare()">
+			<input name="title" ng-model="title" required placeholder="title">			
+			<!--input type="text" value="enter email address to share">
+			<input type="submit" value="share" -->
+
+			<input name="shareTo" ng-model="shareTo" required placeholder="emails">
+			<input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
+      <!--
+      <span class="error" ng-show="shareForm.input.$error.required">Required!</span><br>
+      <tt>shareTo = {{shareTo}}</tt><br>
+      <tt>myForm.input.$valid = {{shareForm.input.$valid}}</tt><br>
+      <tt>myForm.input.$error = {{shareForm.input.$error}}</tt><br>
+      <tt>myForm.$valid = {{shareForm.$valid}}</tt><br>
+      <tt>myForm.$error.required = {{!!shareForm.$error.required}}</tt><br>
+    	-->
+		</form>
 	</div>
 </div>
